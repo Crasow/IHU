@@ -1,6 +1,6 @@
-﻿# Python-Project Shannon-Fano
+﻿# <span style="color: purple">Python-Project "Shannon-Fano Coding Alghorithm" </span>
 
-## Start
+## <span style="color: green"> Start</span>
 You just need to  open folder "dist" and run decoder or encoder.
 
 ## Encoder
