@@ -9,5 +9,5 @@ Will encode your words, symbols or sentenses. It returns whole code and dictiona
 
 ##  $$\textcolor{blue}{\text{Decoder}}$$
 Needs code without spaces and dict for it.
-You can enter dict step by step: word, code for word, word, code, etc.
+You can enter dict step by step: word, code for word, word, code for word, etc. <p>
 Or use ready dict. If u use 2nd var, u need to enter dict as python dictionary {'a':'001', 'h':'101'}.
