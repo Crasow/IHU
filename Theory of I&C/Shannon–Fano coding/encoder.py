@@ -1,12 +1,13 @@
 from collections import Counter
 
 
-def main():
+def ShannonFano(user_word):
     # Ask user a word
+    """
     user_word = input('Enter you word: ')
     if not user_word:
         user_word = 'телефон'
-
+    """
     # Creating list of tuples with pairs (symbol, qty in word)
     word_counter = sorted(Counter(user_word).items())
 
@@ -72,7 +73,13 @@ def main():
     print(encoded_word)
     print(code_dict)
     input('')
+    return encoded_word, code_dict
+
+
+def Huffman(user_word):
+    some_dict = {user_word: 'user_word'}
+    return f'For now enough {user_word}', some_dict
 
 
 if __name__ == '__main__':
-    main()
+    ShannonFano('word')
