@@ -1,10 +1,7 @@
 ﻿
 # <span style="color: purple">Python-Project "Shannon-Fano Coding Alghorithm" </span>
 
-## $$\textcolor{green}{\text{Start}}$$
-
-$$\textcolor{green}{\text{Start}}$$
-
+## +Start+
 You just need to  open folder "dist" and run decoder or encoder.
 
 ## Encoder
