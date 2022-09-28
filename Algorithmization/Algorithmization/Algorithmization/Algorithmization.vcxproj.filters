@@ -18,7 +18,10 @@
     <ClCompile Include="PW_1.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="PW_2.cpp">
+    <ClCompile Include="PW_1 Iliev.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="PW_2 Iliev.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
