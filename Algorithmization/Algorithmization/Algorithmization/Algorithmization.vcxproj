@@ -24,7 +24,7 @@
     <ProjectGuid>{812d785b-e188-4394-913c-e8d60ca741b6}</ProjectGuid>
     <RootNamespace>Algorithmization</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>Algotithmiztion</ProjectName>
+    <ProjectName>Algotithmization</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
