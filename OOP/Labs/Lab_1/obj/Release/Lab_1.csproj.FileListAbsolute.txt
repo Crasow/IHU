@@ -1,8 +1,0 @@
-E:\Рабочий стол\IHU\OOP\Lab_1\Lab_1\bin\Release\Lab_1.exe.config
-E:\Рабочий стол\IHU\OOP\Lab_1\Lab_1\bin\Release\Lab_1.exe
-E:\Рабочий стол\IHU\OOP\Lab_1\Lab_1\bin\Release\Lab_1.pdb
-E:\Рабочий стол\IHU\OOP\Lab_1\Lab_1\obj\Release\Lab_1.csproj.AssemblyReference.cache
-E:\Рабочий стол\IHU\OOP\Lab_1\Lab_1\obj\Release\Lab_1.csproj.SuggestedBindingRedirects.cache
-E:\Рабочий стол\IHU\OOP\Lab_1\Lab_1\obj\Release\Lab_1.csproj.CoreCompileInputs.cache
-E:\Рабочий стол\IHU\OOP\Lab_1\Lab_1\obj\Release\Lab_1.exe
-E:\Рабочий стол\IHU\OOP\Lab_1\Lab_1\obj\Release\Lab_1.pdb

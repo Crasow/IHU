@@ -6,8 +6,7 @@ from kivy.uix.button import Button
 from random import randint
 from kivy.core.window import Window
 
-from encoder import ShannonFano as sf_encode
-from encoder import Huffman as huff_encode
+from encoder import ShannonFano, Huffman
 
 # Global settings
 Window.size = (900, 500)
@@ -27,8 +26,10 @@ class MyApp(App):
 
     def on_text(self, *args):
         user_data = self.input_data.text
-        shafe_res = sf_encode(user_data)
-        huff_res = huff_encode(user_data)
+        shafe_obj = ShannonFano(user_data)
+        shafe_res = shafe_obj.get_code()
+        huff_obj = Huffman(user_data)
+        huff_res = huff_obj.get_code()
         self.shafe.text = f'Алгоритм Шаннон-Фено\n Ваш код: {shafe_res[0]}\n Ваш словарь: {str(shafe_res[1])} '
         self.huff.text = f'Алгоритм Хаффмана\n Ваш код: {huff_res[0]}\n Ваш словарь: {str(huff_res[1])} '
 
@@ -39,12 +40,8 @@ class MyApp(App):
         box.add_widget(self.shafe)
         box.add_widget(self.huff)
 
-
-
         return box
+
 
 if __name__ == "__main__":
     MyApp().run()
-
-
-

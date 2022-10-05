@@ -1,47 +1,50 @@
 from collections import Counter
 
 
-def ShannonFano(user_word):
-    # Ask user a word
-    """
-    user_word = input('Enter you word: ')
-    if not user_word:
-        user_word = 'телефон'
-    """
-    # Creating list of tuples with pairs (symbol, qty in word)
-    word_counter = sorted(Counter(user_word).items())
+class ShannonFano:
 
-    # Creating list with lists [symbol, qty in word, space for code]
-    for indx, el in enumerate(word_counter):
-        word_counter[indx] = list(el) + ['']
+    def __init__(self, user_word):
+        self.user_word = user_word
 
-    code = []  # result [symbol, qty in word, code]
+        # Creating list of tuples with pairs (symbol, qty in word)
+        self.word_counter = sorted(Counter(self.user_word).items())
 
-    code_dict = {}  # comfortable dict {symbol:code}
-    encoded_word = []  # readable code
+        # Creating list with lists [symbol, qty in word, space for self.code]
+        for indx, el in enumerate(self.word_counter):
+            self.word_counter[indx] = list(el) + ['']
 
-    def encoding(arr):
+        self.code = []  # result [symbol, qty in word, self.code]
+        self.code_dict = {}  # comfortable dict {symbol:self.code}
+        self.encoded_word = []  # readable self.code
+
+    def calculate_probability(self):
+        word_len = len(self.user_word)
+        for el in range(len(self.word_counter)):
+            self.word_counter[el][1] = self.word_counter[el][1] / word_len
+
+    def encoding(self, arr):
+        # check for empty arr
         if not arr:
             return
+        # check for only 1 incoming value
+        elif len(arr) == 1:
+            arr[0][2] += '0'
+            self.code.append(arr)
+            return self.encoded_word
+
         left, right = [], []
-        half_indx = 0
-        # Sum of symbol frequencies in a word
-        freq_sum = 0
+        half_indx = 0  # indx of the middle element of the arr
+        freq_sum = 0  # Sum of symbol frequencies in the recieved arr
+
         for i, el in enumerate(arr):
             freq_sum += el[1]
 
-        # check for only 1 incoming value
-        if len(arr) == 1:
-            arr[0][2] += '0'
-            code.append(arr)
-            return
-
         # Find index of middle symbol by frequnce
-        sum = 0
+        summ = 0
         for el in range(len(arr)):
-            sum += arr[el][1]
-            if sum * 2 >= freq_sum:
-                half_indx = el + (abs(2 * sum - freq_sum) < abs(2 * (sum - arr[el][1]) - freq_sum))
+            summ += arr[el][1]
+            if summ * 2 >= freq_sum:
+                half_indx = el + (abs(2 * summ - freq_sum) < abs(2 * (summ - arr[el][1]) - freq_sum))
                 break
 
         # Main recursive part
@@ -54,37 +57,68 @@ def ShannonFano(user_word):
 
         if len(left) == 1:  # first exit condititon
             # if only 1 el in list, then there is nothing to separate so send to final code
-            code.append(left)
+            self.code.append(left)
         else:
-            encoding(left)  # recursion for left part until there will be only 1 el
+            self.encoding(left)  # recursion for left part until there will be only 1 el
         if len(right) == 1:  # second exit condititon
-            code.append(right)
+            self.code.append(right)
         else:
-            encoding(right)
+            self.encoding(right)
 
-    encoding(word_counter)
+    def get_code(self):
+        self.calculate_probability()
+        self.encoding(self.word_counter)
 
-    for el in range(len(user_word)):
-        for c_el in range(len(code)):
-            if user_word[el] == code[c_el][0][0]:
-                encoded_word.append(code[c_el][0][2])
-    encoded_word = ' '.join(encoded_word)
+        for el in range(len(self.user_word)):
+            for c_el in range(len(self.code)):
+                if self.user_word[el] == self.code[c_el][0][0]:
+                    self.encoded_word.append(self.code[c_el][0][2])
+        self.encoded_word = ' '.join(self.encoded_word)
 
-    for el in range(len(code)):
-        code_dict[code[el][0][0]] = code[el][0][2]
+        for el in range(len(self.code)):
+            self.code_dict[self.code[el][0][0]] = self.code[el][0][2]
 
-    encoding(word_counter)
-    # print(encoded_word)
-    # print(code_dict)
-    # input('')
-    return encoded_word, code_dict
+        return self.encoded_word, self.code_dict
 
 
-def Huffman(user_word):
-    some_dict = {user_word: 'user_word'}
-    return f'For now enough {user_word}', some_dict
+class Huffman(ShannonFano):
+    def __init__(self, user_word):
+        super().__init__(user_word)
 
-# res = ShannonFano('word')
-# print(res)
+    class Node:
+        def __init__(self, prob, symbol, left=None, right=None):
+            self.prob = prob
+            self.symbol = symbol
+            self.left = left
+            self.right = right
+            self.code = ''
+
+    def calculate_probability(self):
+        symbols = dict()
+        for element in self.user_word:
+            if symbols.get(element) is None:
+                symbols[element] = 1
+            else:
+                symbols[element] += 1
+        return symbols
+
+    codes = dict()
+
+    def calculate_codes(self, node, val=''):
+        new_val = val + str(node.code)
+
+        if node.left:  # remove brackets
+            self.calculate_codes(node.left, new_val)
+        if node.right:  # remove brackets
+            self.calculate_codes(node.right, new_val)
+
+        if not node.left and not node.right:
+            codes[node.symbol] = new_val
+
+        return codes
+
+
+
 # if __name__ == '__main__':
-#     ShannonFano('word')
+#     res = ShannonFano('word')
+#     print(res)

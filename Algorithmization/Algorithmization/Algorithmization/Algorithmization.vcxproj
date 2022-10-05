@@ -131,6 +131,10 @@
     <ClCompile Include="PW_1.cpp" />
     <ClCompile Include="PW_1 Iliev.cpp" />
     <ClCompile Include="PW_2 Iliev.cpp" />
+    <ClCompile Include="PW_2.cpp" />
+    <ClCompile Include="PW_777.cpp" />
+    <ClCompile Include="PW_3.cpp" />
+    <ClCompile Include="PW_3 Iliev.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Algorithmization.h" />
