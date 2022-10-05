@@ -1,0 +1,8 @@
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: промежуточный каталог (x64\Debug\) содержит файлы, которые используются совместно с другим проектом (Algorithmization.vcxproj, Algotithmiztion.vcxproj, Lab_1.vcxproj).  Это может привести к ошибкам очистки и перестроения.
+  PW_1.cpp
+PW_1 Iliev.obj : error LNK2005: "int __cdecl kl(void)" (?kl@@YAHXZ) уже определен в PW_1.obj
+PW_2 Iliev.obj : error LNK2005: "int __cdecl kl(void)" (?kl@@YAHXZ) уже определен в PW_1.obj
+PW_2.obj : error LNK2005: "int __cdecl kl(void)" (?kl@@YAHXZ) уже определен в PW_1.obj
+PW_777.obj : error LNK2005: "int __cdecl kl(void)" (?kl@@YAHXZ) уже определен в PW_1.obj
+PW_3 Iliev.obj : error LNK2005: "int __cdecl kl(void)" (?kl@@YAHXZ) уже определен в PW_1.obj
+E:\IHU\Algorithmization\Algorithmization\x64\Debug\Algotithmization.exe : fatal error LNK1169: обнаружен многократно определенный символ - один или более
