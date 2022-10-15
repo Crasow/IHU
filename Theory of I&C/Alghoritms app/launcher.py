@@ -6,7 +6,8 @@ from kivy.uix.button import Button
 from random import randint
 from kivy.core.window import Window
 
-from encoder import ShannonFano, Huffman
+from encoder import ShannonFano
+from encoder import Huffman
 
 # Global settings
 Window.size = (900, 500)
@@ -18,20 +19,31 @@ class MyApp(App):
     def __init__(self):
         super().__init__()
         self.label = Label(text='Бинариум')
-        self.shafe = Label(text='Алгоритм Шаннон-Фено\nВаш код: \nВаш словарь: ')
-        self.huff = Label(text='Алгоритм Хаффмана\nВаш код: \nВаш словарь: ')
-        self.huff_kek = Label(text='Huff test')
         self.input_data = TextInput(hint_text='Введите букву, слово или предложение', multiline=False)
+        self.shafe = Label(text='Алгоритм Шаннон-Фено\nВаш код:\nВаш более читаемый код:\nВаш словарь: ')
+        self.huff = Label(text='Алгоритм Хаффмана\nВаш код:\nВаш более читаемый код:\nВаш словарь: ')
         self.input_data.bind(text=self.on_text)
 
     def on_text(self, *args):
         user_data = self.input_data.text
-        shafe_obj = ShannonFano(user_data)
-        shafe_res = shafe_obj.get_code()
-        huff_obj = Huffman(user_data)
-        huff_res = huff_obj.get_code()
-        self.shafe.text = f'Алгоритм Шаннон-Фено\n Ваш код: {shafe_res[0]}\n Ваш словарь: {str(shafe_res[1])} '
-        self.huff.text = f'Алгоритм Хаффмана\n Ваш код: {huff_res[0]}\n Ваш словарь: {str(huff_res[1])} '
+        if user_data:
+            shafe_obj = ShannonFano(user_data)
+            shafe_res = shafe_obj.code_output()
+            self.shafe.text = f'Алгоритм Шаннон-Фено\n ' \
+                              f'Ваш код: {shafe_res[0].replace(" ", "")}\n ' \
+                              f'Ваш более читаемый код:{shafe_res[0]}\n ' \
+                              f'Длина кода:{len(shafe_res[0].replace(" ", ""))}\n ' \
+                              f'Ваш словарь: {str(shafe_res[1])} '
+
+            huff_obj = Huffman(user_data)
+            huff_res = huff_obj.code_output()
+            self.huff.text = f'Алгоритм Хаффмана\n ' \
+                             f'Ваш код: {huff_res[0]}\n ' \
+                             f'Ваш более читаемый код:{huff_res[1]}\n ' \
+                             f'Длина кода:{len(huff_res[0])}\n ' \
+                             f'Ваш словарь: {str(huff_res[2])} '
+
+
 
     def build(self):
         box = BoxLayout(orientation='vertical')

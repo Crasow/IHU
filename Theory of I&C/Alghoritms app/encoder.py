@@ -3,11 +3,11 @@ from collections import Counter
 
 class ShannonFano:
 
-    def __init__(self, user_word):
-        self.user_word = user_word
+    def __init__(self, user_data):
+        self.user_data = user_data
 
         # Creating list of tuples with pairs (symbol, qty in word)
-        self.word_counter = sorted(Counter(self.user_word).items())
+        self.word_counter = sorted(Counter(self.user_data).items())
 
         # Creating list with lists [symbol, qty in word, space for self.code]
         for indx, el in enumerate(self.word_counter):
@@ -18,9 +18,9 @@ class ShannonFano:
         self.encoded_word = []  # readable self.code
 
     def calculate_probability(self):
-        word_len = len(self.user_word)
+        word_len = len(self.user_data)
         for el in range(len(self.word_counter)):
-            self.word_counter[el][1] = self.word_counter[el][1] / word_len
+            self.word_counter[el][1] /= word_len
 
     def encoding(self, arr):
         # check for empty arr
@@ -65,13 +65,13 @@ class ShannonFano:
         else:
             self.encoding(right)
 
-    def get_code(self):
+    def code_output(self):
         self.calculate_probability()
         self.encoding(self.word_counter)
 
-        for el in range(len(self.user_word)):
+        for el in range(len(self.user_data)):
             for c_el in range(len(self.code)):
-                if self.user_word[el] == self.code[c_el][0][0]:
+                if self.user_data[el] == self.code[c_el][0][0]:
                     self.encoded_word.append(self.code[c_el][0][2])
         self.encoded_word = ' '.join(self.encoded_word)
 
@@ -81,12 +81,15 @@ class ShannonFano:
         return self.encoded_word, self.code_dict
 
 
-class Huffman(ShannonFano):
-    def __init__(self, user_word):
-        super().__init__(user_word)
+class Huffman:
+    def __init__(self, user_data):
+        self.user_data = user_data  # data to encode
+        self.sym_prob = {}  # dict of symbols-probabilities pairs
+        self.end_node = None  # end node contains a tree
+        self.symbol_codes_dict = {}  # dict of symbol-code pairs
 
     class Node:
-        def __init__(self, prob, symbol, left=None, right=None):
+        def __init__(self, symbol, prob, right=None, left=None):
             self.prob = prob
             self.symbol = symbol
             self.left = left
@@ -94,31 +97,78 @@ class Huffman(ShannonFano):
             self.code = ''
 
     def calculate_probability(self):
-        symbols = dict()
-        for element in self.user_word:
-            if symbols.get(element) is None:
-                symbols[element] = 1
-            else:
-                symbols[element] += 1
-        return symbols
+        # create pairs symbol-frequency -> sort them by freq -> turn it to dict
+        sym_freq = dict(sorted(Counter(self.user_data).items()))
 
-    codes = dict()
+        # calculate probabilities of symbols and save as dict
+        for k in sym_freq.keys():
+            self.sym_prob[k] = (sym_freq[k] / len(self.user_data))
 
-    def calculate_codes(self, node, val=''):
-        new_val = val + str(node.code)
+    def tree_create(self):
+        # create list of basic nodes
+        nodes = []
+        for k, v in self.sym_prob.items():
+            nodes.append(self.Node(symbol=k, prob=v))
 
-        if node.left:  # remove brackets
-            self.calculate_codes(node.left, new_val)
-        if node.right:  # remove brackets
-            self.calculate_codes(node.right, new_val)
+        # cycle of Huffman coding
+        while len(nodes) > 1:
+            # sort ascending
+            nodes = sorted(nodes, key=lambda x: x.prob)
+            # get two node with minimal frequency and delete them from list
+            left = nodes.pop(0)
+            right = nodes.pop(0)
+            # left always get 0 and right always get 1
+            left.code = '0'
+            right.code = '1'
+            # add new node to list
+            nodes.append(self.Node(symbol=left.symbol + right.symbol,
+                                   prob=left.prob + right.prob,
+                                   left=left, right=right))
 
+        self.end_node = nodes[0]
+
+    def encode_symbols(self, node, code=''):
+        """Func runs through the tree and assigns code for every basic symbol"""
+        symbol_code = code + node.code
+
+        # if node has left or right child - it`s not a basic symbol node
+        if node.left:
+            self.encode_symbols(node.left, symbol_code)
+        if node.right:
+            self.encode_symbols(node.right, symbol_code)
+        # if it`s basic node - add symbol of node and accumulated code to dict as a pair
         if not node.left and not node.right:
-            codes[node.symbol] = new_val
+            self.symbol_codes_dict[node.symbol] = symbol_code
 
-        return codes
+    def code_output(self):
+        # doing main stuff
+        self.calculate_probability()
+        self.tree_create()
+        self.encode_symbols(self.end_node)
+
+        # if only one symbol entered by user - it always has code '0'
+        if len(self.symbol_codes_dict) == 1:
+            for key in self.symbol_codes_dict.keys():
+                self.symbol_codes_dict[key] = '0'
+
+        # encode user data by created dict
+        encoded_data = []
+        for el in self.user_data:
+            for key in self.symbol_codes_dict.keys():
+                if el == key:
+                    encoded_data.append(self.symbol_codes_dict[key])
+        code = ''.join(encoded_data)
+        readable_code = ' '.join(encoded_data)
+
+        # ascending sort by symbol code length
+        sorted_codes_dict = {}
+        sorted_tuples = sorted(self.symbol_codes_dict.items(), key=lambda item: len(item[1]))
+        for el in range(len(sorted_tuples)):
+            sorted_codes_dict[sorted_tuples[el][0]] = sorted_tuples[el][1]
+
+        return code, readable_code, sorted_codes_dict
 
 
-
-# if __name__ == '__main__':
-#     res = ShannonFano('word')
-#     print(res)
+if __name__ == '__main__':
+    print(ShannonFano('телефонеон').code_output())
+    print(Huffman('телефонеон').code_output())
