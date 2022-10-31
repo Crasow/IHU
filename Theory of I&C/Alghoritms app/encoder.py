@@ -36,7 +36,7 @@ class ShannonFano:
         half_indx = 0  # indx of the middle element of the arr
         freq_sum = 0  # Sum of symbol frequencies in the recieved arr
 
-        for i, el in enumerate(arr):
+        for el in arr:
             freq_sum += el[1]
 
         # Find index of middle symbol by frequnce
@@ -81,6 +81,54 @@ class ShannonFano:
         return self.encoded_word, self.code_dict
 
 
+
+class ShannonFanoWithConsolidatedAlph(ShannonFano):
+
+    def alphabet_consolidation(self):
+        self.calculate_probability()
+        consolidated_alph = []
+        joined_cons_alph = []
+        cons_alph_freq = []
+        # create list of lists of consolidated alph
+        for el in self.word_counter:
+            for ell in self.word_counter:
+                for elll in self.word_counter:
+                    consolidated_alph.append([el[0], ell[0], elll[0]])
+
+        # turn list of list into list of strings of consolidated alph
+        for el in range(len(consolidated_alph)):
+            joined_cons_alph.append(''.join(consolidated_alph[el]))
+
+        for el in joined_cons_alph:
+            freq_prod = 1
+            for ell in el:
+                for i in self.word_counter:
+                    if ell == i[0]:
+                        freq_prod *= i[1]
+            cons_alph_freq.append([el, freq_prod, ''])
+        self.word_counter = cons_alph_freq
+
+        return cons_alph_freq
+
+    def code_output(self):
+        self.alphabet_consolidation()
+        self.encoding(self.word_counter)
+
+        start, stop = 0, 3
+        for el in range(0,len(self.user_data),3):
+            user_data_part = self.user_data[start:stop]
+            start += 3
+            stop += 3
+            for ell in range(len(self.code)):
+                if user_data_part == self.code[ell][0][0]:
+                    self.encoded_word.append(self.code[ell][0][2])
+        self.encoded_word = ' '.join(self.encoded_word)
+
+        for el in range(len(self.code)):
+            self.code_dict[self.code[el][0][0]] = self.code[el][0][2]
+
+        return self.encoded_word, self.code_dict
+
 class Huffman:
     def __init__(self, user_data):
         self.user_data = user_data  # data to encode
@@ -103,6 +151,7 @@ class Huffman:
         # calculate probabilities of symbols and save as dict
         for k in sym_freq.keys():
             self.sym_prob[k] = (sym_freq[k] / len(self.user_data))
+        return sym_freq
 
     def tree_create(self):
         # create list of basic nodes
@@ -170,5 +219,28 @@ class Huffman:
 
 
 if __name__ == '__main__':
-    print(ShannonFano('телефонеон').code_output())
-    print(Huffman('телефонеон').code_output())
+    def test(text):
+        a = ShannonFano(text).code_output()
+        b = ShannonFanoWithConsolidatedAlph(text).code_output()
+
+        return a, b
+
+
+    big_text = '322.4 В случае двоичного источника без памяти, когда знаки разновероятные, энтропия меньше 1 дв.ед. (рис. 1). Например, P(a1) = 0,8 , P(a2) = 0,2. Тогда энтропия равна H(A) = 0,722 дв.ед. Применение эффективного кодирования (например, кода Хаффмана) к такому двоичному источнику не даст никакого эффекта (каждый из знаков будет кодироваться одним двоичным символом, независимо от вероятности его появления). Для эффективного кодирования нужное предварительное укрупнение алфавита. Под укрупнением алфавита будем понимать формирование нового алфавита укрупненных знаков (укрупненный знак является соединением из m знаков первичного алфавита). Объем нового (вторичного) алфавита MB определяется как'
+    big_text += '322.4 В случае двоичного источника без памяти, когда знаки разновероятные, энтропия меньше 1 дв.ед. (рис. 1). Например, P(a1) = 0,8 , P(a2) = 0,2. Тогда энтропия равна H(A) = 0,722 дв.ед. Применение эффективного кодирования (например, кода Хаффмана) к такому двоичному источнику не даст никакого эффекта (каждый из знаков будет кодироваться одним двоичным символом, независимо от вероятности его появления). Для эффективного кодирования нужное предварительное укрупнение алфавита. Под укрупнением алфавита будем понимать формирование нового алфавита укрупненных знаков (укрупненный знак является соединением из m знаков первичного алфавита). Объем нового (вторичного) алфавита MB определяется как'
+    text = 'arrrre'
+    print(len(big_text))
+    a, b = test(big_text)
+    print(a[0])
+    x = len(a[0].replace(' ', ''))
+    print(x)
+
+    print(b[0])
+    y = len(b[0].replace(' ', ''))
+    print(y)
+    print(1 -(y/x))
+
+    # print(Huffman('телефонеон').code_output())
+    # var = ShannonFanoWithConsolidatedAlph('ararr')
+    # a = var.alphabet_consolidation()
+    # print(a)
