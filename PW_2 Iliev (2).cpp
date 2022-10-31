@@ -25,6 +25,11 @@
 //    V6 = pow(M_E, pow(log(pow(pow(x, 2) - 1.8, 3)), 3)) + pow(x, 4.5) / atan(pow(x, 2) + pow(a, 2)) - sqrt(pow(x, 3.2));
 //    std::cout << "V6 = " << V6 << '\n';
 //
+//    cout << "Vvedit` x: ";
+//    cin >> x;
+//    y = (2 * x + sin(x)) / (pow(cos(x), 2) + pow(x, 2)) + pow(0.5, x) / sqrt(x);
+//    cout << "y = " << y << '\n';
+//
 //
 //
 //
