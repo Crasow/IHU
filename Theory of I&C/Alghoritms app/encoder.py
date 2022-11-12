@@ -81,7 +81,6 @@ class ShannonFano:
         return self.encoded_word, self.code_dict
 
 
-
 class ShannonFanoWithConsolidatedAlph(ShannonFano):
 
     def alphabet_consolidation(self):
@@ -115,7 +114,7 @@ class ShannonFanoWithConsolidatedAlph(ShannonFano):
         self.encoding(self.word_counter)
 
         start, stop = 0, 3
-        for el in range(0,len(self.user_data),3):
+        for el in range(0, len(self.user_data), 3):
             user_data_part = self.user_data[start:stop]
             start += 3
             stop += 3
@@ -128,6 +127,7 @@ class ShannonFanoWithConsolidatedAlph(ShannonFano):
             self.code_dict[self.code[el][0][0]] = self.code[el][0][2]
 
         return self.encoded_word, self.code_dict
+
 
 class Huffman:
     def __init__(self, user_data):
@@ -218,29 +218,57 @@ class Huffman:
         return code, readable_code, sorted_codes_dict
 
 
+class LZW:
+    def __init__(self, file_path=None, arch_path=None, ):
+        self.file_paths = file_path
+        self.arch_path = arch_path
+
+    def compress_data(self, data, dictionary, dict_size):
+        pass
+
+
 if __name__ == '__main__':
-    def test(text):
-        a = ShannonFano(text).code_output()
-        b = ShannonFanoWithConsolidatedAlph(text).code_output()
+    def shan_test(big_text_factor=1, big_or_small=0):
+        print('-' * 50)
 
-        return a, b
+        def test(text):
+            a = ShannonFano(text).code_output()
+            b = ShannonFanoWithConsolidatedAlph(text).code_output()
+            return a, b
+
+        if big_or_small == 0:
+            test_text = '322.4 В случае двоичного источника без памяти, когда знаки разновероятные, энтропия меньше 1 дв.ед. (рис. 1). Например, P(a1) = 0,8 , P(a2) = 0,2. Тогда энтропия равна H(A) = 0,722 дв.ед. Применение эффективного кодирования (например, кода Хаффмана) к такому двоичному источнику не даст никакого эффекта (каждый из знаков будет кодироваться одним двоичным символом, независимо от вероятности его появления). Для эффективного кодирования нужное предварительное укрупнение алфавита. Под укрупнением алфавита будем понимать формирование нового алфавита укрупненных знаков (укрупненный знак является соединением из m знаков первичного алфавита). Объем нового (вторичного) алфавита MB определяется как'
+            test_text *= big_text_factor
+        else:
+            test_text = 'arrrre'
+
+        print(f'Length of string for Shannon algs: {len(test_text)}')
+        small_text = 'arrrre'
+
+        ShannonFannoObj, ShannonFanoConsObj = test(test_text)
+        # print(ShannonFannoObj[0])
+        shannon_len = len(ShannonFannoObj[0].replace(' ', ''))
+        print(f'Casual code length:  {shannon_len}')
+
+        # print(ShannonFanoConsObj[0])
+        cons_shano_len = len(ShannonFanoConsObj[0].replace(' ', ''))
+        print(f'With consolidated alph code length:  {cons_shano_len}')
+        print(f'Cons code efficiency: {1 - (cons_shano_len / shannon_len)}')
+        print('-' * 50)
 
 
-    big_text = '322.4 В случае двоичного источника без памяти, когда знаки разновероятные, энтропия меньше 1 дв.ед. (рис. 1). Например, P(a1) = 0,8 , P(a2) = 0,2. Тогда энтропия равна H(A) = 0,722 дв.ед. Применение эффективного кодирования (например, кода Хаффмана) к такому двоичному источнику не даст никакого эффекта (каждый из знаков будет кодироваться одним двоичным символом, независимо от вероятности его появления). Для эффективного кодирования нужное предварительное укрупнение алфавита. Под укрупнением алфавита будем понимать формирование нового алфавита укрупненных знаков (укрупненный знак является соединением из m знаков первичного алфавита). Объем нового (вторичного) алфавита MB определяется как'
-    big_text += '322.4 В случае двоичного источника без памяти, когда знаки разновероятные, энтропия меньше 1 дв.ед. (рис. 1). Например, P(a1) = 0,8 , P(a2) = 0,2. Тогда энтропия равна H(A) = 0,722 дв.ед. Применение эффективного кодирования (например, кода Хаффмана) к такому двоичному источнику не даст никакого эффекта (каждый из знаков будет кодироваться одним двоичным символом, независимо от вероятности его появления). Для эффективного кодирования нужное предварительное укрупнение алфавита. Под укрупнением алфавита будем понимать формирование нового алфавита укрупненных знаков (укрупненный знак является соединением из m знаков первичного алфавита). Объем нового (вторичного) алфавита MB определяется как'
-    text = 'arrrre'
-    print(len(big_text))
-    a, b = test(big_text)
-    print(a[0])
-    x = len(a[0].replace(' ', ''))
-    print(x)
+    def huff_test():
+        print('-' * 50)
+        string = 'телефонеон'
+        print(f'Length of strring for Huffman: {len(string)}')
+        print(f'Code: {Huffman(string).code_output()[0]}')
+        print(f'Readable code: {Huffman(string).code_output()[1]}')
+        print(f'Dict: {Huffman(string).code_output()[2]}')
+        print('-' * 50)
 
-    print(b[0])
-    y = len(b[0].replace(' ', ''))
-    print(y)
-    print(1 -(y/x))
 
-    # print(Huffman('телефонеон').code_output())
-    # var = ShannonFanoWithConsolidatedAlph('ararr')
-    # a = var.alphabet_consolidation()
-    # print(a)
+    # first arg - int, by which big text is multipled # default = 1
+    # second arg - bool, big(0) or small(1) text to use # default = 0
+    shan_test()
+
+    huff_test()

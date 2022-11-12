@@ -1,39 +1,56 @@
-from encoder import Huffman
+import argparse
+from struct import *
 
-huff_obj = Huffman('arararrar')
-var = huff_obj.calculate_probability()
-print(var)
-arr = []
-my_str = ''
-for k in var.keys():
-    my_str += k
-
-print(my_str)
-for el in my_str:
-    for ell in my_str:
-        arr.append([el, ell])
-
-range_var = 2
-cnt = 0
-cons_arr = []
-while cnt < pow(len(my_str),range_var):
-    cons_arr.append([])
-    cnt += 1
-
-recur_cnt = 0
-cnt = 0
-# while cnt <=len(my_str):
-# def recurs(arr, cnt):
-#     if recur_cnt >= pow(len(my_str),range_var):
-#         return
-#     else:
-#         for el in arr:
-#             cons_arr[cnt].append()
-#
+mode = ''
+file_paths = []
+arch_path = ''
 
 
-print(cons_arr)
-print(len(cons_arr))
-print(arr)
-print(len(arr))
+class Compressor:
+    def __init__(self, file_paths, arch_path):
+        self.file_paths = file_paths
+        self.arch_path = arch_path
 
+    def readFile(self, path):
+        input_file = open(path, 'rt')
+        data = input_file.read()
+        input_file.close()
+        return data
+
+    def compressData(self, data, dictionary, dict_size):
+        compessed_data = []
+        string = ''
+        for symbol in data:
+            new_string = string + symbol
+            if new_string in dictionary:
+                string = new_string
+            else:
+                compessed_data.append(dictionary[string])
+                dictionary[new_string] = dict_size
+                dict_size += 1
+                string = symbol
+
+        if string in dictionary:
+            compessed_data.append(dictionary[string])
+        return compessed_data
+
+    def writeFile(self, compressed_data):
+        output_file = open(self.arch_path, 'wb')
+        for data in compressed_data:
+            output_file.write(pack('>H', int(data)))
+        output_file.close()
+
+    def compress(self):
+        for path in self.file_paths:
+            dict_size = 256
+            dictionary = {chr(i): i for i in range(dict_size)}
+            data = self.readFile(path)
+            compressed_data = self.compressData(data, dictionary, dict_size)
+            self.writeFile(compressed_data)
+
+
+if __name__ == '__main__':
+    args = parseCmdArgs(sys.argv)
+    if args.mode == 'pack':
+        pass
+        # Compressor( < путь к файлу >, < путь к архиву >).compress()
