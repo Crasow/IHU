@@ -1,4 +1,4 @@
-﻿namespace OOP
+﻿/*namespace OOP
 {
     class Program
     {
@@ -57,4 +57,4 @@
             int[] smallMtrx = CreateSmallMtrx(mtrx, 4, 5, min, max);
         }
     }
-}
+}*/

@@ -128,17 +128,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="PW_1.cpp" />
-    <ClCompile Include="PW_1 Iliev.cpp" />
-    <ClCompile Include="PW_2 Iliev.cpp" />
-    <ClCompile Include="PW_2.cpp" />
-    <ClCompile Include="PW_777.cpp" />
-    <ClCompile Include="PW_3.cpp" />
-    <ClCompile Include="PW_3 Iliev.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Algorithmization.h" />
     <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\math.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PW_1 Iliev.cpp" />
+    <ClCompile Include="PW_1.cpp" />
+    <ClCompile Include="PW_2 Iliev (2).cpp" />
+    <ClCompile Include="PW_2.cpp" />
+    <ClCompile Include="PW_3 (2).cpp" />
+    <ClCompile Include="PW_3 Hleb.cpp" />
+    <ClCompile Include="PW_4 (2).cpp" />
+    <ClCompile Include="PW_4 Hleb.cpp" />
+    <ClCompile Include="PW_5 Hleb.cpp" />
+    <ClCompile Include="PW_5.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

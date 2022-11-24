@@ -219,12 +219,40 @@ class Huffman:
 
 
 class LZW:
-    def __init__(self, file_path=None, arch_path=None, ):
-        self.file_paths = file_path
-        self.arch_path = arch_path
+    def __init__(self, user_data, bits_in_file):
+        self.dictionary = []
+        self.user_data = user_data
+        self.maximum_table_size = pow(2, int(bits_in_file))
 
-    def compress_data(self, data, dictionary, dict_size):
-        pass
+    def create_dict(self):
+        self.dictionary = [chr(i) for i in range(256)]
+        # unic_symbols = set(self.user_data)
+        # for el in unic_symbols:
+        #     self.dictionary.append(el)
+
+    def code_output(self):
+        self.create_dict()
+        new_str = ''
+        code = []
+        cnt = 0
+        is_full = 0
+        for char in self.user_data:
+            if cnt % 100000 == 0 and cnt != 0:
+                print(f'{cnt} cycles gone')
+            cnt += 1
+            if new_str + char in self.dictionary:
+                new_str += char
+            else:
+                code.append(self.dictionary.index(new_str))
+                if len(self.dictionary) < 1000:
+                    self.dictionary.append(new_str + char)
+                elif is_full == 0 and len(self.dictionary) >= 1000:  # 500 = 2275375 1000 = 2417320 15000 = 2609497
+                    print(f'Dictionary have been fulled on {cnt} cycle')
+                    is_full = 1
+                new_str = char
+        if new_str:
+            code += str(self.dictionary.index(new_str))
+        return code
 
 
 if __name__ == '__main__':

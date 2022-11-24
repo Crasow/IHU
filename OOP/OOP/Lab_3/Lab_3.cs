@@ -36,13 +36,13 @@ namespace OOP
 
             do
             {
-                
-                for(double FCnt = 1; FCnt<=dbln*2;FCnt ++)
+
+                for (double FCnt = 1; FCnt <= dbln * 2; FCnt++)
                 {
                     dblF *= FCnt;
                 }
 
-                dblLast = Math.Pow(-1,dbln)*Math.Pow(2,2*dbln)*Math.Pow(dblX,2*dbln+1)/dblF;
+                dblLast = Math.Pow(-1, dbln) * Math.Pow(2, 2 * dbln) * Math.Pow(dblX, 2 * dbln + 1) / dblF;
                 dblS += dblLast;
                 dblF = 1;
                 dbln++;
