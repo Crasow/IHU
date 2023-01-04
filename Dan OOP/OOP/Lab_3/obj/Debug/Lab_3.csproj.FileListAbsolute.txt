@@ -1,0 +1,8 @@
+E:\IHU\OOP\OOP\Lab_3\obj\Debug\Lab_3.csproj.AssemblyReference.cache
+E:\IHU\OOP\OOP\Lab_3\obj\Debug\Lab_3.csproj.SuggestedBindingRedirects.cache
+E:\IHU\OOP\OOP\Lab_3\obj\Debug\Lab_3.csproj.CoreCompileInputs.cache
+E:\IHU\OOP\OOP\Lab_3\bin\Debug\Lab_3.exe.config
+E:\IHU\OOP\OOP\Lab_3\bin\Debug\Lab_3.exe
+E:\IHU\OOP\OOP\Lab_3\bin\Debug\Lab_3.pdb
+E:\IHU\OOP\OOP\Lab_3\obj\Debug\Lab_3.exe
+E:\IHU\OOP\OOP\Lab_3\obj\Debug\Lab_3.pdb

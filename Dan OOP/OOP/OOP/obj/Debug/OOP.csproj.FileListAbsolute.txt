@@ -1,0 +1,10 @@
+E:\IHU\OOP\OOP\OOP\bin\Debug\OOP.exe.config
+E:\IHU\OOP\OOP\OOP\bin\Debug\OOP.exe
+E:\IHU\OOP\OOP\OOP\bin\Debug\OOP.pdb
+E:\IHU\OOP\OOP\OOP\obj\Debug\OOP.csproj.AssemblyReference.cache
+E:\IHU\OOP\OOP\OOP\obj\Debug\OOP.csproj.SuggestedBindingRedirects.cache
+E:\IHU\OOP\OOP\OOP\obj\Debug\OOP.csproj.CoreCompileInputs.cache
+E:\IHU\OOP\OOP\OOP\obj\Debug\OOP.exe
+E:\IHU\OOP\OOP\OOP\obj\Debug\OOP.pdb
+E:\IHU\OOP\OOP\OOP\bin\Debug\Microsoft.VisualStudio.DebuggerVisualizers.dll
+E:\IHU\OOP\OOP\OOP\obj\Debug\OOP.csproj.CopyComplete
