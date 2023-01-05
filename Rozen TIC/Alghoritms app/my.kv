@@ -1,0 +1,23 @@
+WindowManager:
+	MainWindow:
+	SecondWindow:
+
+
+<MainWindow>:
+	name: "main"
+
+	BoxLayout:
+		size_hint: [.5, .5]
+		padding: [25, 65, 25, 75]
+
+		TextInput:
+			hint_text: "Введите букву, слово или предложение"
+			multiline: False
+
+
+<SecondWindow>:
+	name: "second"
+
+
+	Button:
+		text: "Go back"

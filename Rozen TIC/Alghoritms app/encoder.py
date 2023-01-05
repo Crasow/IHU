@@ -175,21 +175,24 @@ class Huffman:
             nodes.append(self.Node(symbol=left.symbol + right.symbol,
                                    prob=left.prob + right.prob,
                                    left=left, right=right))
-
-        self.end_node = nodes[0]
+        if nodes:
+            self.end_node = nodes[0]
 
     def encode_symbols(self, node, code=''):
         """Func runs through the tree and assigns code for every basic symbol"""
-        symbol_code = code + node.code
+        if node:
+            symbol_code = code + node.code
 
-        # if node has left or right child - it`s not a basic symbol node
-        if node.left:
-            self.encode_symbols(node.left, symbol_code)
-        if node.right:
-            self.encode_symbols(node.right, symbol_code)
-        # if it`s basic node - add symbol of node and accumulated code to dict as a pair
-        if not node.left and not node.right:
-            self.symbol_codes_dict[node.symbol] = symbol_code
+            # if node has left or right child - it`s not a basic symbol node
+            if node.left:
+                self.encode_symbols(node.left, symbol_code)
+            if node.right:
+                self.encode_symbols(node.right, symbol_code)
+            # if it`s basic node - add symbol of node and accumulated code to dict as a pair
+            if not node.left and not node.right:
+                self.symbol_codes_dict[node.symbol] = symbol_code
+        # else:
+        #     symbol_code = None
 
     def code_output(self):
         # doing main stuff
@@ -239,9 +242,9 @@ class LZW:
         max_size = pow(2, len(self.user_data))
         for char in self.user_data:
 
-            if cnt % 100000 == 0 and cnt != 0:
-                print(f'{cnt} cycles gone')
-            cnt += 1
+            # if cnt % 100000 == 0 and cnt != 0:
+            #     print(f'{cnt} cycles gone')
+            # cnt += 1
 
             if string + char in dictionary:
                 string += char
@@ -258,7 +261,8 @@ class LZW:
 
         if string:
             compressed_data.append(str(dictionary.index(string)))
-        return compressed_data
+
+        return compressed_data, dictionary
 
 
 class Arithmetic:
@@ -282,7 +286,7 @@ class Arithmetic:
                 cnt += 1
         return cnt / len(data)
 
-    def coding(self):
+    def code_output(self):
         char_prob = sorted(self.create_dict(), key=lambda x: x[1], reverse=True)
         left, right = Decimal('0'), Decimal('1')
 
@@ -313,23 +317,19 @@ class Hamming:
     def __init__(self, user_data):
         self.user_data = user_data
         self.CHUNK_LENGTH = 8
-        assert not self.CHUNK_LENGTH % 8, 'Длина блока должна быть кратна 8'     # проверка длины блока
-        self.CHECK_BITS = [i for i in range(1, self.CHUNK_LENGTH + 1) if not i & (i - 1)]     # вычисление контрольных бит
-
-
-
-
+        assert not self.CHUNK_LENGTH % 8, 'Длина блока должна быть кратна 8'  # проверка длины блока
+        self.CHECK_BITS = [i for i in range(1, self.CHUNK_LENGTH + 1) if not i & (i - 1)]  # вычисление контрольных бит
 
     def chars_to_bin(self, chars):
         """
         Преобразование символов в бинарный формат
         """
         arr = []
-        assert not len(chars) * 8 % self.CHUNK_LENGTH, 'Длина кодируемых данных должна быть кратна длине блока кодирования'
+        assert not len(
+            chars) * 8 % self.CHUNK_LENGTH, 'Длина кодируемых данных должна быть кратна длине блока кодирования'
         res = ''.join([bin(ord(c))[2:].zfill(8) for c in chars])
         for c in chars:
-
-            arr.append( bin(ord(c))[2:].zfill(8) )
+            arr.append(bin(ord(c))[2:].zfill(8))
         return res
 
     def chunk_iterator(self, text_bin, chunk_size=None):
@@ -473,6 +473,29 @@ class Hamming:
         return decoded_value
 
 
+class ASCII:
+    def __init__(self, user_data):
+        self.user_data = user_data
+
+    def encoding(self):
+        code = bin(int.from_bytes(self.user_data.encode(), 'big'))
+        return code
+
+    def code_output(self):
+        code = self.encoding()
+        code = code.replace('b', '')
+
+        separated_code_list = []
+        cnt=0
+        temp_code = code
+        while temp_code:
+            cnt +=8
+            code_part = temp_code[:cnt]
+            separated_code_list.append(code_part)
+            temp_code = temp_code[cnt+1:]
+        readable_code = ' '.join(separated_code_list)
+        return code, readable_code
+
 if __name__ == '__main__':
     def create_data(big_text_factor=1, big_or_small_val=0):
         if big_or_small_val == 0:
@@ -486,14 +509,14 @@ if __name__ == '__main__':
             #             'первичного алфавита). Объем нового (вторичного) алфавита MB определяется как '
             # test_text *= big_text_factor
             test_text = 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a ' \
-                            'piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard ' \
-                            'McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of ' \
-                            'the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through ' \
-                            'the cites of the word in classical literature, discovered the undoubtable source. Lorem ' \
-                            'Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The ' \
-                            'Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the ' \
-                            'theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, ' \
-                            '"Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32. '
+                        'piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard ' \
+                        'McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of ' \
+                        'the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through ' \
+                        'the cites of the word in classical literature, discovered the undoubtable source. Lorem ' \
+                        'Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The ' \
+                        'Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the ' \
+                        'theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, ' \
+                        '"Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32. '
         else:
             test_text = 'arrrre'
         return test_text
@@ -550,13 +573,13 @@ if __name__ == '__main__':
         data = 'abacaba'
         var = Arithmetic(data)
         # print(f'{len(data)}')
-        res = var.coding()
+        res = var.code_output()
         print(f'{res[0]}')
         print(f'{res[1]}')
 
 
     def hamming_test(big_or_small):
-        print('-'*50)
+        print('-' * 50)
         hamm_obj = Hamming(create_data(big_or_small_val=big_or_small))
         print('Длина блока кодирования: {0}'.format(hamm_obj.CHUNK_LENGTH))
         print('Контрольные биты: {0}'.format(hamm_obj.CHECK_BITS))
@@ -574,6 +597,12 @@ if __name__ == '__main__':
         print('Результат декодирования ошибочных данных с исправлением ошибок: {0}'.format(decoded))
 
 
+    def ascii_test():
+        res = ASCII('sd').code_output()
+        print(res)
+
+
+    ascii_test()
     # first arg - int, by which big text is multipled # default = 1
     # second arg - bool, big(0) or small(1) text to use # default = 0
     # lzw_test(big_text_factor=100)
@@ -582,4 +611,4 @@ if __name__ == '__main__':
 
     # ariphmetic_test()
 
-    hamming_test(0)
+    # hamming_test(0)

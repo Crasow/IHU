@@ -1,48 +1,56 @@
+def compress(uncompressed):
+    """Compress a string to a list of output symbols."""
 
-def float2bin(x, eps=1e-9):
-    res = ''
-    while x > eps:
-        x *= 2
-        res += str(int(x))
-        x -= int(x)
+    # Build the dictionary.
+    dict_size = 256
+    dictionary = {chr(i): chr(i) for i in range(dict_size)}
 
-    return res
+    w = ""
+    result = []
+    for c in uncompressed:
+        wc = w + c
+        if wc in dictionary:
+            w = wc
+        else:
+            result.append(dictionary[w])
+            # Add wc to the dictionary.
+            dictionary[wc] = dict_size
+            dict_size += 1
+            w = c
 
-
-def bin2float(x):
-    return sum(2 ** (-i - 1) for i, digit in enumerate(x) if digit == '1')
-
-
-def find_code(a, b):
-    i = 0
-    a += '0' * (len(b) - len(a))
-    while a[i] == b[i]:
-        i += 1
-    res = a[:i] + '0'
-    cnt = 0
-    while a[i] == 1:
-        i += 1
-        cnt += 1
-    res += '1' * (cnt + 1)
-    return res
+    # Output the code for w.
+    if w:
+        result.append(dictionary[w])
+    return result
 
 
-def coding(word, alphabet, prob):
-    left, right = 0, 1
 
-    for letter in word:
-        letter_indx = alphabet.index(letter)
-        left, right = (left + (right - left) * sum(prob[:letter_indx]),
-                       left + (right - left) * sum(prob[: letter_indx + 1]))
+def decompress(compressed):
+    """Decompress a list of output ks to a string."""
 
-    a,b = map(float2bin, (left, right))
-    # res = find_code(res)
-    return find_code(a,b)
-    # return left, right
+    # Build the dictionary.
+    dict_size = 256
+    dictionary = {chr(i): chr(i) for i in range(dict_size)}
+
+    w = result = compressed.pop(0)
+    for k in compressed:
+        if k in dictionary:
+            entry = dictionary[k]
+        elif k == dict_size:
+            entry = w + w[0]
+        else:
+            raise ValueError('Bad compressed k: %s' % k)
+        result += entry
+
+        # Add w+entry[0] to the dictionary.
+        dictionary[dict_size] = w + entry[0]
+        dict_size += 1
+
+        w = entry
+    return result
 
 
-alphabet = 'abc'
-prob = (4 / 7, 2 / 7, 1 / 7)
-word = 'abacaba'
-code = coding(word, alphabet, prob)
-print(code)
+compressed = compress('TOBEORNOTTOBEORTOBEORNOT')
+print (compressed)
+decompressed = decompress(compressed)
+print (decompressed)
